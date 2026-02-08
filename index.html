@@ -29,4 +29,56 @@
 <body>
   <div id="root"></div>
 </body>
+  <!-- Firebase SDK Setup -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com";
+
+  // Aapki Firebase Config (Firebase Console > Project Settings se milegi)
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY_HERE",
+    authDomain: "oil-change-tracing.firebaseapp.com",
+    databaseURL: "https://oil-change-tracing-default-rtdb.firebaseio.com",
+    projectId: "oil-change-tracing",
+    storageBucket: "oil-change-tracing.appspot.com",
+    messagingSenderId: "1053231268279",
+    appId: "1:1053231268279:web:42451c1bf26b8f929d2832"
+  };
+
+  // Firebase Initialize karen
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // --- DATA SAVE KARNA (Write) ---
+  // Is function ko aap kisi button ke onclick par call kar sakte hain
+  window.updateLiveStatus = function(newData) {
+    set(ref(db, 'live_updates/'), {
+      content: newData,
+      timestamp: Date.now()
+    }).then(() => console.log("Data Save Ho Gaya!"));
+  };
+
+  // --- LIVE UPDATE DIKHANA (Read) ---
+  // Yeh code har user ki screen par data automatically badal dega
+  const updateRef = ref(db, 'live_updates/');
+  onValue(updateRef, (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      // 'displayArea' woh ID hai jahan aap data dikhana chahte hain
+      const element = document.getElementById('displayArea');
+      if(element) {
+          element.innerHTML = data.content;
+      }
+    }
+  });
+</script>
+
+<!-- Aapka UI (Example) -->
+<div style="padding: 20px; border: 1px solid #ccc;">
+  <h3>Real-time Dashboard</h3>
+  <p>Live Data: <b id="displayArea">Loading...</b></p>
+  <input type="text" id="inputField" placeholder="Nayi update likhen">
+  <button onclick="updateLiveStatus(document.getElementById('inputField').value)">Update Karen</button>
+</div>
+
 </html>
