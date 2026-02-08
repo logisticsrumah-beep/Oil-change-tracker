@@ -1,0 +1,5 @@
+{
+  "name": "TruckLube - Fleet Maintenance Tracker",
+  "description": "A comprehensive truck oil change management system that tracks maintenance schedules, truck details, and sends notifications 15 days after the last service. Features an admin dashboard and AI-powered fleet insights.",
+  "requestFramePermissions": []
+}
