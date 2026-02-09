@@ -2,80 +2,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TruckLube - Maintenance Tracker</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EquipMaster Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+        }
+        [dir="rtl"] {
+            font-family: 'Noto Sans Arabic', sans-serif;
+        }
+    </style>
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.40.0"
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+    "firebase/database": "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js",
+    "firebase/": "https://esm.sh/firebase@^12.8.0/"
   }
 }
 </script>
 </head>
-<body>
-  <div id="root"></div>
+<body class="bg-gray-50 text-gray-900">
+    <div id="root"></div>
 </body>
-  <!-- Firebase SDK Setup -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com";
-
-  // Aapki Firebase Config (Firebase Console > Project Settings se milegi)
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY_HERE",
-    authDomain: "oil-change-tracing.firebaseapp.com",
-    databaseURL: "https://oil-change-tracing-default-rtdb.firebaseio.com",
-    projectId: "oil-change-tracing",
-    storageBucket: "oil-change-tracing.appspot.com",
-    messagingSenderId: "1053231268279",
-    appId: "1:1053231268279:web:42451c1bf26b8f929d2832"
-  };
-
-  // Firebase Initialize karen
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  // --- DATA SAVE KARNA (Write) ---
-  // Is function ko aap kisi button ke onclick par call kar sakte hain
-  window.updateLiveStatus = function(newData) {
-    set(ref(db, 'live_updates/'), {
-      content: newData,
-      timestamp: Date.now()
-    }).then(() => console.log("Data Save Ho Gaya!"));
-  };
-
-  // --- LIVE UPDATE DIKHANA (Read) ---
-  // Yeh code har user ki screen par data automatically badal dega
-  const updateRef = ref(db, 'live_updates/');
-  onValue(updateRef, (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      // 'displayArea' woh ID hai jahan aap data dikhana chahte hain
-      const element = document.getElementById('displayArea');
-      if(element) {
-          element.innerHTML = data.content;
-      }
-    }
-  });
-</script>
-
-  <p>Live Data: <b id="displayArea">Loading...</b></p>
-  <input type="text" id="inputField" placeholder="Nayi update likhen">
-  <button onclick="updateLiveStatus(document.getElementById('inputField').value)">Update Karen</button>
-</div>
-
 </html>
